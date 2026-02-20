@@ -68,7 +68,7 @@ const submitHandler = (recipe) => {
       <p className="mt-4">{recipe.desc}</p>
       </div>
     
-         <form className="right w-1/2 p-2" onSubmit={handleSubmit(submitHandler)}
+         <form className="right w-1/2 py-10 px-40 m-5 " onSubmit={handleSubmit(submitHandler)}
       
     >
 
@@ -142,7 +142,7 @@ const submitHandler = (recipe) => {
       </select> */}
 
       <select 
-      value={recipe.category}
+      value={recipe.cateogory}
   className="border-b outline-none p-2"
   {...register("instructions", { required: "Instructions are required" })}
 >
