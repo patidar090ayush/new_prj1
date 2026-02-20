@@ -2,9 +2,13 @@ import { nanoid } from "nanoid";
 import { useForm } from "react-hook-form";
 import { useContext } from "react";
 import { RecipeContext } from "../context/RecipeContext";
+import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
 
 
 const Create = () => {
+
+ const navigate =useNavigate();  
 
 //   const {data , setdata} = useContext(recipecontext);
    const { recipes, setRecipes } = useContext(RecipeContext);
@@ -16,8 +20,9 @@ const submitHandler = (recipe) => {
   recipe.id = nanoid();
 
   setRecipes(prev => [...prev, recipe]);
-
+  toast.success("Recipe created successfully!");
   reset();
+  navigate("/recipes");
 };
 
       
@@ -45,7 +50,7 @@ const submitHandler = (recipe) => {
 
        <textarea
         className="border-b outline-none p-2"
-        {...register("description")}
+        {...register("desc")}
         type="text"
         placeholder="Enter the description of the recipe"
       ></textarea>
@@ -54,7 +59,7 @@ const submitHandler = (recipe) => {
   
       <textarea
         className="border-b outline-none p-2"
-        {...register("ingredients")}
+        {...register("ingr")}
         type="text"
         placeholder="Enter the ingredients of the recipe"
       ></textarea>
@@ -62,7 +67,7 @@ const submitHandler = (recipe) => {
 
       <textarea
         className="border-b outline-none p-2"
-        {...register("instructions")}
+        {...register("inst")}
         type="text"
         placeholder="Enter the instructions of the recipe"
       ></textarea>
@@ -76,17 +81,33 @@ const submitHandler = (recipe) => {
       />
       
 
-        
+{/*         
       <select
         className="border-b outline-none p-2"
         {...register("instructions")}
         type="text"
         placeholder="Enter the instructions of the recipe"
       >
-        <option value="cat-1">Category 1</option>
-         <option value="cat-2">Category 2</option>
-          <option value="cat-3">Category 3</option>
-      </select>
+        <option value="breakfast">BreakFast</option>
+         <option value="lunch">Lunch</option>
+           <option value="supper">Supper</option>
+          <option value="dinner">Dinner</option>
+      </select> */}
+
+      <select
+  className="border-b outline-none p-2"
+  {...register("instructions", { required: "Instructions are required" })}
+>
+  <option value="">Select meal type</option>
+  <option value="supper">Supper</option>
+  <option value="dinner">Dinner</option>
+</select>
+
+{errors.instructions && (
+  <p className="text-red-500 text-sm mt-1">
+    {errors.instructions.message}
+  </p>
+)}
 
 
       <button className="bg-green-500 text-white py-2 rounded">
