@@ -229,6 +229,7 @@ const SingleRecipe = () => {
     );
 
     setRecipes(updatedRecipes);
+     localStorage.setItem("recipes", JSON.stringify(updatedRecipes));
     toast.success("Recipe Updated Successfully 🍕");
     navigate("/recipes");
   };
@@ -247,7 +248,7 @@ const SingleRecipe = () => {
     );
 
     setRecipes(filteredRecipes);
-
+    localStorage.setItem("recipes", JSON.stringify(filteredRecipes));
     toast.error("Recipe Deleted Successfully 🗑️");
     navigate("/recipes");
   };

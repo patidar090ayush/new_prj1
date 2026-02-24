@@ -7,30 +7,34 @@ import { toast } from "react-toastify";
 
 
 const Create = () => {
+  const navigate = useNavigate();
 
- const navigate =useNavigate();  
+  //   const {data , setdata} = useContext(recipecontext);
+  const { recipes, setRecipes } = useContext(RecipeContext);
 
-//   const {data , setdata} = useContext(recipecontext);
-   const { recipes, setRecipes } = useContext(RecipeContext);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm();
 
- 
-  const { register, handleSubmit , reset ,  formState: { errors }} = useForm();
+  const submitHandler = (recipe) => {
+    recipe.id = nanoid();
+    const copydata = [...recipes];
+    copydata.push(recipe);
+    setRecipes(copydata);
+    localStorage.setItem("recipes", JSON.stringify(copydata));
+    toast.success("Recipe created successfully!");
+    reset();
+    navigate("/recipes");
+  };
 
-const submitHandler = (recipe) => {
-  recipe.id = nanoid();
-
-  setRecipes(prev => [...prev, recipe]);
-  toast.success("Recipe created successfully!");
-  reset();
-  navigate("/recipes");
-};
-
-      
   return (
-    <form  onSubmit={handleSubmit(submitHandler)}
+    <form
+      onSubmit={handleSubmit(submitHandler)}
       className="flex flex-col gap-2 w-96 mt-0"
     >
-
       <input
         className="border-b outline-none p-2"
         {...register("image")}
@@ -45,25 +49,23 @@ const submitHandler = (recipe) => {
         type="text"
         placeholder="Recipe Title"
       />
-     <small className="text-red-400"> This is how the error is show</small>
+      <small className="text-red-400"> This is how the error is show</small>
 
-
-       <textarea
+      <textarea
         className="border-b outline-none p-2"
         {...register("desc")}
         type="text"
         placeholder="Enter the description of the recipe"
       ></textarea>
-     <small className="text-red-400"> This is how the error is show</small>
-     
-  
+      <small className="text-red-400"> This is how the error is show</small>
+
       <textarea
         className="border-b outline-none p-2"
         {...register("ingr")}
         type="text"
         placeholder="Enter the ingredients of the recipe"
       ></textarea>
-     <small className="text-red-400"> This is how the error is show</small>
+      <small className="text-red-400"> This is how the error is show</small>
 
       <textarea
         className="border-b outline-none p-2"
@@ -71,17 +73,16 @@ const submitHandler = (recipe) => {
         type="text"
         placeholder="Enter the instructions of the recipe"
       ></textarea>
-     <small className="text-red-400"> This is how the error is show</small>
+      <small className="text-red-400"> This is how the error is show</small>
 
-     <input
+      <input
         className="border-b outline-none p-2"
         {...register("chef")}
         type="text"
         placeholder="Recipe Title"
       />
-      
 
-{/*         
+      {/*         
       <select
         className="border-b outline-none p-2"
         {...register("instructions")}
@@ -95,25 +96,23 @@ const submitHandler = (recipe) => {
       </select> */}
 
       <select
-  className="border-b outline-none p-2"
-  {...register("instructions", { required: "Instructions are required" })}
->
-  <option value="">Select meal type</option>
-  <option value="supper">Supper</option>
-  <option value="dinner">Dinner</option>
-</select>
+        className="border-b outline-none p-2"
+        {...register("instructions", { required: "Instructions are required" })}
+      >
+        <option value="">Select meal type</option>
+        <option value="supper">Supper</option>
+        <option value="dinner">Dinner</option>
+      </select>
 
-{errors.instructions && (
-  <p className="text-red-500 text-sm mt-1">
-    {errors.instructions.message}
-  </p>
-)}
-
+      {errors.instructions && (
+        <p className="text-red-500 text-sm mt-1">
+          {errors.instructions.message}
+        </p>
+      )}
 
       <button className="bg-green-500 text-white py-2 rounded">
         Create Recipe
       </button>
-
     </form>
   );
 };
